@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void print_usage() {
   printf("Usage: try [-dh] <command>\n");
-  printf("  -d <seconds>   seconds to wait between executing command\n");
+  printf("  -d <seconds>   seconds to wait between executing command. defaults to 2 seconds.\n");
   printf("  -h             print this message\n");
 }
 
@@ -55,6 +55,9 @@ int main(int argc, char** argv) {
       exit(0);
     case 'd':
       delay = atoi(optarg);
+      if (delay == 0) {
+        delay = 2; // default delay if we can't parse the value
+      }
       break;
     }
   }
