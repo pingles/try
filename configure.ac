@@ -1,4 +1,4 @@
-AC_INIT([try], [0.2], [paul@oobaloo.co.uk])
+AC_INIT([try], [0.1], [paul@oobaloo.co.uk])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 AC_PROG_CC
 AC_PROG_CC_STDC
