@@ -20,24 +20,49 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <unistd.h>
 #include <string.h>
 
+void print_usage() {
+  printf("Usage: try [-dh] <command>\n");
+  printf("  -d=<seconds>   seconds to wait between executing command\n");
+  printf("  -h             print this message\n");
+}
+
 int main(int argc, char** argv) {
+  int opt, delay;
+  
+  while ((opt = getopt(argc, argv, "hd:")) != -1) {
+    switch (opt) {
+    case 'h':
+      print_usage();
+      exit(0);
+    case 'd':
+      delay = atoi(optarg);
+      break;
+    }
+  }
+
   int commandlength = 0;
-  for (int i = 1; i < argc; i++) {
+  for (int i = optind; i < argc; i++) {
     commandlength = strlen(argv[i]);
   }
   char* commandstr = malloc(sizeof(char*) * (commandlength + 1));
   memset(commandstr, 0, (commandlength + 1));
-  
-  for (int i = 1; i < argc; i++) {
+
+  for (int i = optind; i < argc; i++) {
     if (strlen(commandstr) > 0) {
       strcat(commandstr, " ");
     }
     strcat(commandstr, argv[i]);
   }
   
+  if (strlen(commandstr) == 0) {
+    printf("Must provide command.\n");
+    print_usage();
+    exit(-1);
+  }
+  
   int result = system(commandstr);
   while (result != 0) {
-    sleep(2);
+    sleep(delay);
     result = system(commandstr);
   }
   
