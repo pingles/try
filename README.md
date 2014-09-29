@@ -15,3 +15,7 @@
     Warning: Permanently added '[foobar.com]:22,[...]:...' ...
     Welcome to Ubuntu 12.04
 
+## To Do
+
+* Add an option to print usage/help
+* Allow users to specify an option to control the retry delay
