@@ -1,2 +1,9 @@
+CFLAGS := "-D_POSIX_SOURCE"
+
+.PHONY: clean
+
 try: try.c
-	cc try.c -o try -std=c99
+	cc -Wall -pedantic try.c $(CFLAGS) -o try -std=c99
+
+clean:
+	rm -rf try

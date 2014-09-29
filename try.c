@@ -19,16 +19,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdbool.h>
+#include <getopt.h>
 
 void print_usage() {
   printf("Usage: try [-dh] <command>\n");
-  printf("  -d=<seconds>   seconds to wait between executing command\n");
+  printf("  -d <seconds>   seconds to wait between executing command\n");
   printf("  -h             print this message\n");
+}
+
+char* parse_command(int argc, char** argv, int start) {
+  int commandlength = 0;
+  for (int i = start; i < argc; i++) {
+    commandlength = strlen(argv[i]);
+  }
+  char* commandstr = malloc(sizeof(char*) * (commandlength + 1));
+  memset(commandstr, 0, (commandlength + 1));
+
+  for (int i = start; i < argc; i++) {
+    if (strlen(commandstr) > 0) {
+      strcat(commandstr, " ");
+    }
+    strcat(commandstr, argv[i]);
+  }
+  return commandstr;
 }
 
 int main(int argc, char** argv) {
   int opt, delay;
-  
+
   while ((opt = getopt(argc, argv, "hd:")) != -1) {
     switch (opt) {
     case 'h':
@@ -40,31 +59,27 @@ int main(int argc, char** argv) {
     }
   }
 
-  int commandlength = 0;
-  for (int i = optind; i < argc; i++) {
-    commandlength = strlen(argv[i]);
-  }
-  char* commandstr = malloc(sizeof(char*) * (commandlength + 1));
-  memset(commandstr, 0, (commandlength + 1));
+  char* commandstr = parse_command(argc, argv, optind);
 
-  for (int i = optind; i < argc; i++) {
-    if (strlen(commandstr) > 0) {
-      strcat(commandstr, " ");
-    }
-    strcat(commandstr, argv[i]);
-  }
-  
   if (strlen(commandstr) == 0) {
     printf("Must provide command.\n");
     print_usage();
     exit(-1);
   }
-  
+
   int result = system(commandstr);
-  while (result != 0) {
-    sleep(delay);
+  for (;;) {
+    if (result == EXIT_SUCCESS) {
+      exit(0);
+    }
+
+    int sleep_res = sleep(delay);
+    if (sleep_res != 0) {
+      printf("sleep interrupted: %d", sleep_res);
+    }
+
     result = system(commandstr);
   }
-  
+
   return EXIT_SUCCESS;
 }
