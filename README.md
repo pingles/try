@@ -6,7 +6,10 @@ Often I find I want to run a command repeatedly until it succeeds. For example, 
 
 ## Building
 
-    $ make
+    $ autoreconf --install
+
+    $ ./configure
+    $ make install  
 
 ## Running
 
@@ -15,10 +18,6 @@ Often I find I want to run a command repeatedly until it succeeds. For example, 
     Warning: Permanently added '[foobar.com]:22,[...]:...' ...
     Welcome to Ubuntu 12.04
 
-## To Do
-
-* Add an option to print usage/help
-* Allow users to specify an option to control the retry delay
-
 ## License
 
+Distributed under the GNU General Public License v3.

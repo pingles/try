@@ -1,1 +1,16 @@
-try
+/Makefile
+/Makefile.in
+/aclocal.m4
+/autom4te.cache/
+/config.*
+/compile
+/depcomp
+/install-sh
+/missing
+/configure
+/m4/
+/stamp-h?
+.deps/
+.dirstamp
+*.o
+*~
