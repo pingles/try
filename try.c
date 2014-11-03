@@ -46,7 +46,8 @@ char* parse_command(int argc, char** argv, int start) {
 }
 
 int main(int argc, char** argv) {
-  int opt, delay;
+  int opt;
+  int delay = 2;
 
   while ((opt = getopt(argc, argv, "hd:")) != -1) {
     switch (opt) {
@@ -54,7 +55,7 @@ int main(int argc, char** argv) {
       print_usage();
       exit(0);
     case 'd':
-      delay = atoi(optarg);
+      delay = strtol(optarg, NULL, 10);
       if (delay == 0) {
         delay = 2; // default delay if we can't parse the value
       }
